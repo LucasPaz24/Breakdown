@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LUCAS PAZ 3D|CGI — Processo &amp; Breakdown | Agnus Watch</title>
+  <!-- Google Fonts: Inter (Editorial) & JetBrains Mono (Especificações Técnicas) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f8f8;
+      --surface-hover: #f1f1f1;
+      --ink: #0a0a0a;
+      --ink-muted: #5a5a5a;
+      --ink-subtle: #8c8c8c;
+      --border: #e5e5e5;
+      --border-strong: #141414;
+      --radius: 2px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       CABEÇALHO STICKY MINIMALISTA
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand span {
+      color: var(--ink-subtle);
+      font-weight: 400;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1.5px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--ink);
+    }
+
+    .nav-link.active {
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Container Principal */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ==========================================================================
+       SEÇÃO 00 — VISÃO 01: HERO EDITORIAL & GALERIA LIMPA DE CARDS (3:4)
+       ========================================================================== */
+    .view-hidden {
+      display: none !important;
+    }
+
+    @keyframes subTabReveal {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .projects-hero {
+      padding: 64px 0 80px;
+      animation: subTabReveal 0.28s ease;
+    }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background-color: var(--ink);
+    }
+
+    .hero-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      color: var(--ink);
+      max-width: 720px;
+    }
+
+    .hero-desc {
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--ink-muted);
+      max-width: 600px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .catalog-counter {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-subtle);
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: var(--radius);
+    }
+
+    /* Grade Modular de Cards Verticais (Máximo 3 Colunas no Desktop) */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 32px;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      text-align: left;
+      background: transparent;
+      border: none;
+      color: inherit;
+      font-family: inherit;
+    }
+
+    .project-card:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 6px;
+      border-radius: var(--radius);
+    }
+
+    .project-thumb-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .project-card:hover .project-thumb-box {
+      border-color: var(--ink);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.07);
+    }
+
+    .project-thumb-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+    }
+
+    .project-thumb-sketch {
+      opacity: 0;
+      z-index: 2;
+    }
+
+    .project-card:hover .project-thumb-sketch,
+    .project-card:focus-visible .project-thumb-sketch {
+      opacity: 1;
+    }
+
+    .project-card:hover .project-thumb-img {
+      transform: scale(1.025);
+    }
+
+    .thumb-badge-action {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      z-index: 4;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-card:hover .thumb-badge-action,
+    .project-card:focus-visible .thumb-badge-action {
+      background: #0a0a0a;
+      color: #ffffff;
+      border-color: #0a0a0a;
+    }
+
+    .project-card-footer {
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .project-index-line {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-subtle);
+    }
+
+    .project-name {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+    }
+
+    .project-category {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+      margin-top: 2px;
+    }
+
+    /* ==========================================================================
+       VISÃO 02 — SUB-ABA DEDICADA DO PROJETO (DENTRO DO CARD)
+       ========================================================================== */
+    .breakdown-viewer {
+      animation: subTabReveal 0.3s ease;
+    }
+
+    .subtab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subtab-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .back-to-gallery-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .back-to-gallery-btn:hover {
+      background: var(--ink);
+      color: #ffffff;
+      border-color: var(--ink);
+    }
+
+    .breadcrumb-trail {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-subtle);
+    }
+
+    .breadcrumb-trail strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .subtab-quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .subtab-anchor {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .subtab-anchor:hover {
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+    }
+
+    .project-context-bar {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: end;
+    }
+
+    .context-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-subtle);
+      margin-bottom: 8px;
+    }
+
+    .context-title {
+      font-size: clamp(24px, 3.2vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .context-subtitle {
+      margin-top: 10px;
+      font-size: 14.5px;
+      color: var(--ink-muted);
+      max-width: 560px;
+    }
+
+    .meta-table {
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+    }
+
+    .meta-label {
+      color: var(--ink-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .meta-val {
+      color: var(--ink);
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* ==========================================================================
+       SEÇÕES DE BREAKDOWN & CONTROLES SEGMENTADOS
+       ========================================================================== */
+    .section-block {
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .section-index {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-subtle);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .section-sub {
+      font-size: 14px;
+      color: var(--ink-muted);
+      margin-top: 4px;
+    }
+
+    .control-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 3px;
+      border-radius: var(--radius);
+    }
+
+    .pill-btn {
+      appearance: none;
+      border: none;
+      background: transparent;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      padding: 8px 13px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.18s ease;
+    }
+
+    .pill-btn:hover {
+      color: var(--ink);
+    }
+
+    .pill-btn.active {
+      background: var(--ink);
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .toggle-btn {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink);
+      padding: 10px 14px;
+      cursor: pointer;
+      border-radius: var(--radius);
+      transition: all 0.18s ease;
+    }
+
+    .toggle-btn:hover,
+    .toggle-btn.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    /* ==========================================================================
+       BLOCO 01 — SLIDER COMPARATIVO INTERATIVO (ANTES & DEPOIS)
+       ========================================================================== */
+    .hero-showcase-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 560px) 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .compare-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+      cursor: ew-resize;
+    }
+
+    .compare-wrapper:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 3px;
+    }
+
+    .compare-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    .compare-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      clip-path: inset(0 50% 0 0);
+      pointer-events: none;
+    }
+
+    .compare-divider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1.5px;
+      background: #0a0a0a;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.7);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .compare-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #0a0a0a;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: -1px;
+    }
+
+    .stage-badge {
+      position: absolute;
+      top: 14px;
+      z-index: 8;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      backdrop-filter: blur(6px);
+      pointer-events: none;
+    }
+
+    .stage-badge.left {
+      left: 14px;
+    }
+
+    .stage-badge.right {
+      right: 14px;
+      background: rgba(10, 10, 10, 0.9);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ==========================================================================
+       NOTAS TÉCNICAS (PINS NUMERADOS SOBRE A IMAGEM)
+       ========================================================================== */
+    .pins-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 12;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .pins-layer.visible {
+      opacity: 1;
+    }
+
+    .tech-pin {
+      position: absolute;
+      pointer-events: auto;
+      transform: translate(-50%, -50%);
+    }
+
+    .pin-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #0a0a0a;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.28);
+      transition: transform 0.18s ease;
+    }
+
+    .pin-dot:hover {
+      transform: scale(1.1);
+    }
+
+    .pin-card {
+      position: absolute;
+      left: 32px;
+      top: -10px;
+      width: 224px;
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--ink);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+      display: none;
+      z-index: 25;
+    }
+
+    .tech-pin.pin-right .pin-card {
+      left: auto;
+      right: 32px;
+    }
+
+    .tech-pin:hover .pin-card,
+    .tech-pin.open .pin-card {
+      display: block;
+    }
+
+    .pin-card strong {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    /* Cards das Etapas na Coluna Direita */
+    .pipeline-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .step-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      padding: 20px 22px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .step-card:hover {
+      border-color: var(--ink-muted);
+      background: var(--surface);
+    }
+
+    .step-card.active {
+      border-color: var(--ink);
+      background: var(--surface);
+    }
+
+    .step-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .step-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-subtle);
+      text-transform: uppercase;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .step-text {
+      font-size: 13.5px;
+      color: var(--ink-muted);
+      line-height: 1.55;
+    }
+
+    .slider-hint {
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ==========================================================================
+       BLOCO 02 — GRADE DE 2 COLUNAS (TAMPA TRASEIRA & LUPA MACRO 2.4x)
+       ========================================================================== */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+    }
+
+    .detail-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .detail-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .loupe-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      overflow: hidden;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .loupe-base {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .loupe-glass {
+      position: absolute;
+      width: 176px;
+      height: 176px;
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.15s ease;
+      background-repeat: no-repeat;
+      z-index: 15;
+    }
+
+    .loupe-container:hover .loupe-glass,
+    .loupe-container.active .loupe-glass {
+      opacity: 1;
+    }
+
+    .specs-strip {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .spec-item span {
+      display: block;
+      color: var(--ink-subtle);
+      font-size: 10px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    /* ==========================================================================
+       BLOCO 03 — PALCO DE CINEMA (FILME COMERCIAL 36s)
+       ========================================================================== */
+    .cinema-box {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #0a0a0a;
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .video-stage {
+      position: relative;
+      width: 100%;
+      max-height: 76vh;
+      aspect-ratio: 3 / 4;
+      max-width: 540px;
+      margin: 0 auto;
+      background: #0a0a0a;
+      overflow: hidden;
+    }
+
+    .video-stage video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #0a0a0a;
+    }
+
+    .video-fallback-msg {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+      background: rgba(10, 10, 10, 0.94);
+      color: #ffffff;
+      gap: 14px;
+      z-index: 10;
+    }
+
+    .video-fallback-msg.visible {
+      display: flex;
+    }
+
+    .cinema-controls {
+      border-top: 1px solid #242424;
+      padding: 16px 20px;
+      background: #111111;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .scrubber-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cinema-btn {
+      appearance: none;
+      border: 1px solid #333333;
+      border-radius: 2px;
+      background: #1a1a1a;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 13px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .cinema-btn:hover {
+      background: #ffffff;
+      color: #0a0a0a;
+      border-color: #ffffff;
+    }
+
+    .scrubber {
+      flex: 1;
+      min-width: 140px;
+      accent-color: #ffffff;
+      cursor: pointer;
+      height: 4px;
+    }
+
+    .time-readout {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #a3a3a3;
+      min-width: 86px;
+      text-align: right;
+    }
+
+    .chapters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .chapter-chip {
+      appearance: none;
+      border: 1px solid #2b2b2b;
+      border-radius: 2px;
+      background: transparent;
+      color: #b5b5b5;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chapter-chip:hover,
+    .chapter-chip.active {
+      border-color: #ffffff;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ==========================================================================
+       RODAPÉ MINIMALISTA
+       ========================================================================== */
+    .site-footer {
+      padding: 40px 0 56px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-subtle);
+    }
+
+    /* ==========================================================================
+       RESPONSIVIDADE (MOBILE & TABLET)
+       ========================================================================== */
+    @media (max-width: 920px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+
+      .project-context-bar,
+      .hero-showcase-grid,
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-showcase-grid {
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .specs-strip {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .pin-card {
+        width: 175px;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. Cabeçalho Sticky Minimalista -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="#topo" class="brand" id="brandHomeLink">LUCAS PAZ <span>3D|CGI</span></a>
+      <nav class="nav-tabs" aria-label="Navegação Principal">
+        <a href="./index.html" class="nav-link">Portfólio</a>
+        <a href="#processo" class="nav-link active" id="navProcessoLink">Processo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="topo" class="container">
+
+    <!-- 2. VISÃO 01 — Galeria Limpa de Cards Verticais (Estado Inicial) -->
+    <section id="galleryView" class="projects-hero">
+      <div class="eyebrow">PROCESSO &amp; BREAKDOWN</div>
+      <div class="hero-header-row">
+        <div>
+          <h1 class="hero-title">Do Croqui ao Render Comercial</h1>
+          <p class="hero-desc">
+            Selecione um projeto abaixo para abrir o breakdown técnico completo — do traço inicial e topologia poligonal ao render PBR e animação final.
+          </p>
+        </div>
+        <div class="catalog-counter" id="catalogCounter">01 PROJETO</div>
+      </div>
+
+      <!-- Grade Escalável de Cards Verticais (3:4) -->
+      <div class="projects-grid" id="projectsGrid" aria-label="Galeria de Projetos com Breakdown"></div>
+    </section>
+
+    <!-- 3. VISÃO 02 — Sub-aba Dedicada Dentro do Card Selecionado -->
+    <div id="projectSubTab" class="breakdown-viewer view-hidden" role="region" aria-label="Detalhes do Projeto Selecionado">
+
+      <!-- Barra Superior de Retorno e Navegação Interna da Sub-aba -->
+      <div class="subtab-bar">
+        <div class="subtab-left">
+          <button type="button" class="back-to-gallery-btn" id="backToGalleryBtn">← Voltar aos Projetos</button>
+          <span class="breadcrumb-trail" id="subtabBreadcrumb">PROCESSO / <strong>01 · AGNUS WATCH</strong></span>
+        </div>
+        <nav class="subtab-quick-links" aria-label="Seções do Breakdown">
+          <a href="#bloco-frontal" class="subtab-anchor">01 Frontal</a>
+          <a href="#bloco-detalhes" class="subtab-anchor">02 Detalhes</a>
+          <a href="#bloco-filme" class="subtab-anchor">03 Filme 36s</a>
+        </nav>
+      </div>
+
+      <!-- Cabeçalho Editorial e Ficha Técnica do Projeto -->
+      <section class="project-context-bar">
+        <div>
+          <div class="context-eyebrow" id="activeContextEyebrow">PROJETO 01 · BREAKDOWN TÉCNICO</div>
+          <h2 class="context-title" id="activeProjectHeading">AGNUS WATCH — Do Croqui ao Render Comercial</h2>
+          <p class="context-subtitle" id="activeProjectDesc">
+            Decomposição completa do pipeline de visualização 3D: estudo de proporções em traço técnico, modelagem poligonal limpa, escultura em baixo-relevo e iluminação PBR de estúdio.
+          </p>
+        </div>
+        <div class="meta-table">
+          <div class="meta-row">
+            <span class="meta-label">Cliente / Peça</span>
+            <span class="meta-val" id="metaClient">Agnus Watch · Diver Automatic</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Pipeline</span>
+            <span class="meta-val" id="metaPipeline">Modelagem · Sculpt · LookDev · CGI</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-label">Entregáveis</span>
+            <span class="meta-val" id="metaDeliverables">Stills 4K + Filme Comercial 36s</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ETAPA 01 — Vista Principal (Hero Frontal) -->
+      <section id="bloco-frontal" class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-index">Etapa 01 — Vista Principal (Hero)</div>
+            <h2 class="section-title">Evolução Frontal: Croqui → Malha → Final</h2>
+            <p class="section-sub">Arraste a linha divisória ou selecione os estágios abaixo para inspecionar o alinhamento geométrico.</p>
+          </div>
+
+          <div class="control-bar">
+            <div class="pill-group" role="group" aria-label="Modo de comparação frontal">
+              <button type="button" class="pill-btn active" data-front-preset="sketch-final">Croqui → Final</button>
+              <button type="button" class="pill-btn" data-front-preset="clay-final">Clay / Malha → Final</button>
+              <button type="button" class="pill-btn" data-front-preset="sketch-clay">Croqui → Clay</button>
+            </div>
+            <button type="button" class="toggle-btn" id="togglePinsBtn">Notas Técnicas</button>
+          </div>
+        </div>
+
+        <div class="hero-showcase-grid">
+          <div>
+            <div class="compare-wrapper" id="frontSlider" tabindex="0" aria-label="Comparador interativo frontal">
+              <!-- Camada Direita (Base) -->
+              <img
+                class="compare-img"
+                id="frontBaseImg"
+                data-asset="agnus-frente-final.jpg"
+                src="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnus-frente-final.jpg"
+                alt="Render Final Frontal Agnus Watch"
+              />
+              <!-- Camada Esquerda (Sobreposta com clip-path) -->
+              <div class="compare-overlay" id="frontOverlay">
+                <img
+                  class="compare-img"
+                  id="frontTopImg"
+                  data-asset="agnus-frente-croqui.jpg"
+                  src="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnus-frente-croqui.jpg"
+                  alt="Croqui Técnico Frontal Agnus Watch"
+                />
+              </div>
+
+              <span class="stage-badge left" id="frontLeftBadge">01 · Croqui Técnico</span>
+              <span class="stage-badge right" id="frontRightBadge">03 · Render Final</span>
+
+              <!-- Pins Numerados Interativos -->
+              <div class="pins-layer" id="frontPinsLayer"></div>
+
+              <!-- Linha Divisória e Handle Circular -->
+              <div class="compare-divider" id="frontDivider">
+                <div class="compare-handle">◀▶</div>
+              </div>
+            </div>
+
+            <div class="slider-hint">
+              <span>Arraste ou use ← → no teclado</span>
+              <span id="frontPercentReadout">50%</span>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: 3 Cards Clicáveis das Etapas -->
+          <div class="pipeline-cards" id="frontStageCardsContainer"></div>
+        </div>
+      </section>
+
+      <!-- ETAPA 02 — Escultura & Acabamento Macro (Grade de 2 Colunas) -->
+      <section id="bloco-detalhes" class="section-block">
+        <div class="section-head">
+          <div>
+            <div class="section-index">Etapa 02 — Escultura &amp; Acabamento Macro</div>
+            <h2 class="section-title">Tampa Traseira (Baixo-Relevo) &amp; Detalhe da Coroa</h2>
+            <p class="section-sub">Inspeção do relevo escultórico B.M.V a Fátima e ampliação óptica dos shaders metálicos.</p>
+          </div>
+        </div>
+
+        <div class="details-grid">
+          <!-- Coluna 02.A: Tampa Traseira (B.M.V a Fátima) -->
+          <article class="detail-card">
+            <div class="detail-header">
+              <span class="detail-label" id="backDetailLabel">02.A · Verso Gravado (B.M.V a Fátima)</span>
+              <div class="pill-group" role="group" aria-label="Comparação tampa traseira">
+                <button type="button" class="pill-btn active" data-back-preset="sketch-final">Croqui → Final</button>
+                <button type="button" class="pill-btn" data-back-preset="clay-final">Clay Sculpt → Final</button>
+              </div>
+            </div>
+
+            <div class="compare-wrapper" id="backSlider" tabindex="0" aria-label="Comparador tampa traseira">
+              <img
+                class="compare-img"
+                id="backBaseImg"
+                data-asset="agnus-verso-final.jpg"
+                src="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnus-verso-final.jpg"
+                alt="Render Final Tampa Traseira Agnus Watch"
+              />
+              <div class="compare-overlay" id="backOverlay">
+                <img
+                  class="compare-img"
+                  id="backTopImg"
+                  data-asset="agnus-verso-croqui.jpg"
+                  src="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnus-verso-croqui.jpg"
+                  alt="Croqui Tampa Traseira Agnus Watch"
+                />
+              </div>
+              <span class="stage-badge left" id="backLeftBadge">01 · Croqui</span>
+              <span class="stage-badge right">03 · Metal Final</span>
+              <div class="compare-divider" id="backDivider">
+                <div class="compare-handle">◀▶</div>
+              </div>
+            </div>
+
+            <div class="specs-strip" id="backSpecsStrip"></div>
+          </article>
+
+          <!-- Coluna 02.B: Close-up Macro da Coroa com Lupa Óptica 2.4x -->
+          <article class="detail-card">
+            <div class="detail-header">
+              <span class="detail-label" id="macroDetailLabel">02.B · Close-up Macro &amp; Lupa 2.4×</span>
+              <span class="step-tag">Passe o cursor ou toque para ampliar</span>
+            </div>
+
+            <div class="loupe-container" id="macroLoupeBox">
+              <img
+                class="loupe-base"
+                id="macroBaseImg"
+                data-asset="agnus-coroa-macro.jpg"
+                src="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnus-coroa-macro.jpg"
+                alt="Detalhe Macro Coroa Agnus Watch"
+              />
+              <div class="loupe-glass" id="macroLoupeGlass"></div>
+              <span class="stage-badge left">Macro · Lupa Óptica 2.4×</span>
+            </div>
+
+            <div class="specs-strip" id="macroSpecsStrip"></div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ETAPA 03 — Filme Comercial Finalizado (36s) -->
+      <section id="bloco-filme" class="section-block" style="border-bottom: none;">
+        <div class="section-head">
+          <div>
+            <div class="section-index">Etapa 03 — Animação &amp; Direção de Câmera</div>
+            <h2 class="section-title" id="videoSectionTitle">Filme Comercial Finalizado (36s)</h2>
+            <p class="section-sub">Apresentação em movimento com transições de iluminação, rotação da caixa e fechamento do fecho.</p>
+          </div>
+          <div class="control-bar">
+            <label class="toggle-btn" for="localVideoInput" style="cursor: pointer;">Carregar MP4 Local</label>
+            <input type="file" id="localVideoInput" accept="video/mp4,video/*" style="display: none;" />
+          </div>
+        </div>
+
+        <div class="cinema-box">
+          <div class="video-stage">
+            <video
+              id="agnusVideo"
+              poster="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnus-frente-final.jpg"
+              playsinline
+              muted
+              loop
+              preload="metadata"
+            >
+              <source src="./agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4" type="video/mp4" />
+              <source src="https://raw.githubusercontent.com/LucasPaz24/Portf-lio/main/agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4" type="video/mp4" />
+              <source src="https://media.githubusercontent.com/media/LucasPaz24/Portf-lio/main/agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4" type="video/mp4" />
+              <source src="https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4" type="video/mp4" />
+            </video>
+
+            <div class="video-fallback-msg" id="videoFallback">
+              <p style="font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;">
+                Prévia do vídeo aguardando arquivo
+              </p>
+              <p style="font-size: 13px; color: #bdbdbd; max-width: 340px;">
+                Clique em <strong>"Carregar MP4 Local"</strong> acima para selecionar o arquivo <strong>agnuswatch-animação-reduzido.mp4</strong> ou visualize online.
+              </p>
+            </div>
+          </div>
+
+          <div class="cinema-controls">
+            <div class="scrubber-row">
+              <button type="button" class="cinema-btn" id="playPauseBtn">Play</button>
+              <button type="button" class="cinema-btn" id="muteBtn">Som: Off</button>
+              <input type="range" class="scrubber" id="videoScrubber" min="0" max="36" step="0.1" value="0" aria-label="Linha do tempo do vídeo" />
+              <span class="time-readout" id="timeReadout">00:00 / 00:36</span>
+              <button type="button" class="cinema-btn" id="fullscreenBtn">Tela Cheia</button>
+            </div>
+
+            <div class="chapters-row" id="chaptersRow"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 4. Rodapé Minimalista -->
+    <footer class="site-footer">
+      <span>LUCAS PAZ 3D|CGI — ARTISTA 3D &amp; VISUALIZAÇÃO DE PRODUTO</span>
+      <span id="footerProjectLabel">ABA PROCESSO · SELECIONE UM PROJETO PARA INSPECIONAR</span>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      /* ========================================================================
+         1. BANCO DE DADOS MODULAR DE PROJETOS (ESCALÁVEL)
+         ------------------------------------------------------------------------
+         COMO ADICIONAR NOVOS PROJETOS NO FUTURO:
+         Basta duplicar o objeto abaixo dentro de `PROJECTS`, alterar o `id`,
+         `index`, `name`, `category`, os caminhos de imagens/vídeo e as notas
+         técnicas. O card vertical (3:4) aparecerá automaticamente na galeria
+         inicial e abrirá sua própria sub-aba ao ser clicado.
+         ======================================================================== */
+      const BREAKDOWN_REPO = "https://raw.githubusercontent.com/LucasPaz24/Breakdown";
+
+      const PROJECTS = [
+        {
+          id: "agnus-watch",
+          index: "01",
+          name: "AGNUS WATCH",
+          category: "Relojoaria · CGI & Animação 36s",
+          headline: "AGNUS WATCH — Do Croqui ao Render Comercial",
+          description:
+            "Decomposição completa do pipeline de visualização 3D: estudo de proporções em traço técnico, modelagem poligonal limpa, escultura em baixo-relevo e iluminação PBR de estúdio.",
+          meta: {
+            client: "Agnus Watch · Diver Automatic",
+            pipeline: "Modelagem · Sculpt · LookDev · CGI",
+            deliverables: "Stills 4K + Filme Comercial 36s"
+          },
+          assets: {
+            thumbFinal: "agnus-frente-final.jpg",
+            thumbSketch: "agnus-frente-croqui.jpg",
+            frontCroqui: "agnus-frente-croqui.jpg",
+            frontClay: "agnus-frente-clay.jpg",
+            frontFinal: "agnus-frente-final.jpg",
+            backLabel: "02.A · Verso Gravado (B.M.V a Fátima)",
+            backCroqui: "agnus-verso-croqui.jpg",
+            backClay: "agnus-verso-clay.jpg",
+            backFinal: "agnus-verso-final.jpg",
+            macroLabel: "02.B · Close-up Macro & Lupa 2.4×",
+            macroImg: "agnus-coroa-macro.jpg"
+          },
+          pins: [
+            {
+              num: "1",
+              left: "50%",
+              top: "38%",
+              alignRight: false,
+              title: "01 · Luneta & Inserto",
+              text: "Recartilhado perimetral modelado em malha quad com marcadores luminosos e emblema superior em relevo."
+            },
+            {
+              num: "2",
+              left: "77%",
+              top: "53%",
+              alignRight: true,
+              title: "02 · Coroa & Protetores",
+              text: "Aço inoxidável 316L com chanfros controlados para captura de reflexos lineares de softbox."
+            },
+            {
+              num: "3",
+              left: "50%",
+              top: "61%",
+              alignRight: false,
+              title: "03 · Mostrador & Safira",
+              text: "Fundo preto profundo com índices aplicados, ponteiros facetados e vidro antirreflexo."
+            }
+          ],
+          stages: [
+            {
+              num: "01 / Croqui & Estudo",
+              tag: "Conceito 2D",
+              title: "Construção Geométrica e Proporção",
+              text: "Definição das linhas de centro, diâmetro da caixa, largura das garras e ritmo dos marcadores no mostrador antes da blocagem poligonal."
+            },
+            {
+              num: "02 / Modelagem & Topologia",
+              tag: "Clay + Wireframe",
+              title: "Subdivisão Limpa e Chanfros de Precisão",
+              text: "Malha estruturada em quads para garantir reflexos metálicos contínuos sem distorção nas curvas da caixa, elos da pulseira e dentes da luneta."
+            },
+            {
+              num: "03 / LookDev & Render Final",
+              tag: "PBR Studio",
+              title: "Aço Escovado, Contraste e Iluminação",
+              text: "Configuração de shaders anisotrópicos para o aço escovado, contraste especular controlado no aro preto e acabamento editorial de estúdio."
+            }
+          ],
+          backSpecs: [
+            { label: "Técnica", value: "Baixo-Relevo 3D" },
+            { label: "Gravação", value: "10 ATM · MIYOTA" },
+            { label: "Série", value: "L000-S00/00" }
+          ],
+          macroSpecs: [
+            { label: "Superfície", value: "Aço Escovado + Polido" },
+            { label: "Óptica", value: "DOF Físico (Macro)" },
+            { label: "Geometria", value: "Estrias Chanfradas" }
+          ],
+          video: {
+            title: "Filme Comercial Finalizado (36s)",
+            durationFallback: 36,
+            poster: "agnus-frente-final.jpg",
+            sources: [
+              "./agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4",
+              "https://raw.githubusercontent.com/LucasPaz24/Portf-lio/main/agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4",
+              "https://media.githubusercontent.com/media/LucasPaz24/Portf-lio/main/agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4",
+              "https://raw.githubusercontent.com/LucasPaz24/Breakdown/main/agnuswatch-anima%C3%A7%C3%A3o-reduzido.mp4"
+            ],
+            chapters: [
+              { seek: 0, label: "00s · Hero Frontal" },
+              { seek: 9, label: "09s · Verso Fátima" },
+              { seek: 14, label: "14s · Fecho Pulseira" },
+              { seek: 22, label: "22s · Mostrador" },
+              { seek: 28, label: "28s · Macro Coroa" }
+            ]
+          }
+        }
+      ];
+
+      let activeProject = null;
+
+      /* ========================================================================
+         2. RESOLUÇÃO DE ASSETS COM FALLBACK AUTOMÁTICO (GITHUB RAW + LOCAL)
+         ======================================================================== */
+      function getAssetCandidates(filename) {
+        if (!filename) return [];
+        if (/^https?:\/\//i.test(filename) || filename.startsWith("data:") || filename.startsWith("blob:")) {
+          return [filename];
+        }
+        return [
+          `${BREAKDOWN_REPO}/main/${filename}`,
+          `${BREAKDOWN_REPO}/main/assets/agnus/${filename}`,
+          `${BREAKDOWN_REPO}/master/${filename}`,
+          `${BREAKDOWN_REPO}/master/assets/agnus/${filename}`,
+          `./assets/agnus/${filename}`,
+          `./${filename}`
+        ];
+      }
+
+      function setImgAsset(imgEl, filename) {
+        if (!imgEl || !filename) return;
+        const candidates = getAssetCandidates(filename);
+        let idx = 0;
+        imgEl.dataset.asset = filename;
+        imgEl.onerror = function () {
+          idx += 1;
+          if (idx < candidates.length) {
+            imgEl.src = candidates[idx];
+          }
+        };
+        imgEl.src = candidates[0];
+      }
+
+      /* ========================================================================
+         3. RENDERIZAÇÃO DA GALERIA DE CARDS VERTICAIS (VISÃO 01)
+         ======================================================================== */
+      const galleryView = document.getElementById("galleryView");
+      const projectSubTab = document.getElementById("projectSubTab");
+      const projectsGrid = document.getElementById("projectsGrid");
+      const catalogCounter = document.getElementById("catalogCounter");
+
+      function renderProjectCards() {
+        const total = PROJECTS.length;
+        catalogCounter.textContent = `${String(total).padStart(2, "0")} ${total === 1 ? "PROJETO" : "PROJETOS"}`;
+        projectsGrid.innerHTML = "";
+
+        PROJECTS.forEach((proj) => {
+          const cardBtn = document.createElement("button");
+          cardBtn.type = "button";
+          cardBtn.className = "project-card";
+          cardBtn.setAttribute("aria-label", `Abrir breakdown do projeto ${proj.name}`);
+
+          cardBtn.innerHTML = `
+            <div class="project-thumb-box">
+              <img class="project-thumb-img project-thumb-final" alt="${proj.name} — Render Final" />
+              <img class="project-thumb-img project-thumb-sketch" alt="${proj.name} — Croqui Técnico" />
+              <span class="thumb-badge-action">ABRIR BREAKDOWN →</span>
+            </div>
+            <div class="project-card-footer">
+              <span class="project-index-line">${proj.index}</span>
+              <span class="project-name">${proj.name}</span>
+              <span class="project-category">${proj.category}</span>
+            </div>
+          `;
+
+          const finalImg = cardBtn.querySelector(".project-thumb-final");
+          const sketchImg = cardBtn.querySelector(".project-thumb-sketch");
+          setImgAsset(finalImg, proj.assets.thumbFinal);
+          setImgAsset(sketchImg, proj.assets.thumbSketch);
+
+          cardBtn.addEventListener("click", () => {
+            openProjectSubTab(proj.id, true);
+          });
+
+          projectsGrid.appendChild(cardBtn);
+        });
+      }
+
+      /* ========================================================================
+         4. CONTROLADORES DOS SLIDERS COMPARATIVOS, LUPA 2.4x E PINS TÉCNICOS
+         ======================================================================== */
+      function initCompareSlider(config) {
+        const wrapper = document.getElementById(config.wrapperId);
+        const overlay = document.getElementById(config.overlayId);
+        const divider = document.getElementById(config.dividerId);
+        const readout = config.readoutId ? document.getElementById(config.readoutId) : null;
+        let pct = 50;
+        let dragging = false;
+
+        function setPosition(nextPct) {
+          pct = Math.max(0, Math.min(100, nextPct));
+          overlay.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+          divider.style.left = `${pct}%`;
+          if (readout) readout.textContent = `${Math.round(pct)}%`;
+        }
+
+        function updateFromClientX(clientX) {
+          const rect = wrapper.getBoundingClientRect();
+          if (rect.width <= 0) return;
+          const rel = ((clientX - rect.left) / rect.width) * 100;
+          setPosition(rel);
+        }
+
+        wrapper.addEventListener("pointerdown", (e) => {
+          if (e.target.closest(".tech-pin")) return;
+          dragging = true;
+          wrapper.setPointerCapture(e.pointerId);
+          updateFromClientX(e.clientX);
+        });
+
+        wrapper.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          updateFromClientX(e.clientX);
+        });
+
+        wrapper.addEventListener("pointerup", (e) => {
+          if (!dragging) return;
+          dragging = false;
+          try {
+            wrapper.releasePointerCapture(e.pointerId);
+          } catch (_) {}
+        });
+
+        wrapper.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            setPosition(pct - 4);
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            setPosition(pct + 4);
+          }
+        });
+
+        setPosition(50);
+        return { setPosition };
+      }
+
+      const frontCtrl = initCompareSlider({
+        wrapperId: "frontSlider",
+        overlayId: "frontOverlay",
+        dividerId: "frontDivider",
+        readoutId: "frontPercentReadout"
+      });
+
+      const backCtrl = initCompareSlider({
+        wrapperId: "backSlider",
+        overlayId: "backOverlay",
+        dividerId: "backDivider"
+      });
+
+      const frontTopImg = document.getElementById("frontTopImg");
+      const frontBaseImg = document.getElementById("frontBaseImg");
+      const frontLeftBadge = document.getElementById("frontLeftBadge");
+      const frontRightBadge = document.getElementById("frontRightBadge");
+      const frontPinsLayer = document.getElementById("frontPinsLayer");
+      const togglePinsBtn = document.getElementById("togglePinsBtn");
+      const frontStageCardsContainer = document.getElementById("frontStageCardsContainer");
+
+      const backTopImg = document.getElementById("backTopImg");
+      const backBaseImg = document.getElementById("backBaseImg");
+      const backLeftBadge = document.getElementById("backLeftBadge");
+
+      function applyFrontPreset(mode, splitPct = 50) {
+        const proj = activeProject || PROJECTS[0];
+        document.querySelectorAll("[data-front-preset]").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.frontPreset === mode);
+        });
+
+        if (mode === "sketch-final") {
+          setImgAsset(frontTopImg, proj.assets.frontCroqui);
+          setImgAsset(frontBaseImg, proj.assets.frontFinal);
+          frontLeftBadge.textContent = "01 · Croqui Técnico";
+          frontRightBadge.textContent = "03 · Render Final";
+        } else if (mode === "clay-final") {
+          setImgAsset(frontTopImg, proj.assets.frontClay);
+          setImgAsset(frontBaseImg, proj.assets.frontFinal);
+          frontLeftBadge.textContent = "02 · Clay / Malha";
+          frontRightBadge.textContent = "03 · Render Final";
+        } else if (mode === "sketch-clay") {
+          setImgAsset(frontTopImg, proj.assets.frontCroqui);
+          setImgAsset(frontBaseImg, proj.assets.frontClay);
+          frontLeftBadge.textContent = "01 · Croqui Técnico";
+          frontRightBadge.textContent = "02 · Clay / Malha";
+        }
+
+        frontCtrl.setPosition(splitPct);
+      }
+
+      function applyBackPreset(mode, splitPct = 50) {
+        const proj = activeProject || PROJECTS[0];
+        document.querySelectorAll("[data-back-preset]").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.backPreset === mode);
+        });
+
+        setImgAsset(backBaseImg, proj.assets.backFinal);
+        if (mode === "sketch-final") {
+          setImgAsset(backTopImg, proj.assets.backCroqui);
+          backLeftBadge.textContent = "01 · Croqui";
+        } else {
+          setImgAsset(backTopImg, proj.assets.backClay);
+          backLeftBadge.textContent = "02 · Clay Sculpt";
+        }
+
+        backCtrl.setPosition(splitPct);
+      }
+
+      document.querySelectorAll("[data-front-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyFrontPreset(btn.dataset.frontPreset, 50);
+        });
+      });
+
+      document.querySelectorAll("[data-back-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyBackPreset(btn.dataset.backPreset, 50);
+        });
+      });
+
+      togglePinsBtn.addEventListener("click", () => {
+        const visible = frontPinsLayer.classList.toggle("visible");
+        togglePinsBtn.classList.toggle("active", visible);
+        if (!visible) {
+          document.querySelectorAll(".tech-pin").forEach((p) => p.classList.remove("open"));
+        }
+      });
+
+      // Lupa Óptica 2.4x na Coroa Macro
+      const loupeBox = document.getElementById("macroLoupeBox");
+      const loupeGlass = document.getElementById("macroLoupeGlass");
+      const macroBaseImg = document.getElementById("macroBaseImg");
+      const ZOOM = 2.4;
+
+      function moveLoupe(clientX, clientY) {
+        const rect = loupeBox.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) return;
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+        loupeGlass.style.left = `${x}px`;
+        loupeGlass.style.top = `${y}px`;
+        loupeGlass.style.backgroundImage = `url("${macroBaseImg.currentSrc || macroBaseImg.src}")`;
+        loupeGlass.style.backgroundSize = `${rect.width * ZOOM}px ${rect.height * ZOOM}px`;
+        const bgX = -(x * ZOOM - loupeGlass.offsetWidth / 2);
+        const bgY = -(y * ZOOM - loupeGlass.offsetHeight / 2);
+        loupeGlass.style.backgroundPosition = `${bgX}px ${bgY}px`;
+      }
+
+      loupeBox.addEventListener("pointermove", (e) => {
+        loupeBox.classList.add("active");
+        moveLoupe(e.clientX, e.clientY);
+      });
+
+      loupeBox.addEventListener("pointerdown", (e) => {
+        loupeBox.classList.add("active");
+        moveLoupe(e.clientX, e.clientY);
+      });
+
+      loupeBox.addEventListener("pointerleave", () => {
+        loupeBox.classList.remove("active");
+      });
+
+      /* ========================================================================
+         5. CONTROLES DO PLAYER DE CINEMA (FILME COMERCIAL 36s)
+         ======================================================================== */
+      const video = document.getElementById("agnusVideo");
+      const playPauseBtn = document.getElementById("playPauseBtn");
+      const muteBtn = document.getElementById("muteBtn");
+      const scrubber = document.getElementById("videoScrubber");
+      const timeReadout = document.getElementById("timeReadout");
+      const fullscreenBtn = document.getElementById("fullscreenBtn");
+      const videoFallback = document.getElementById("videoFallback");
+      const localVideoInput = document.getElementById("localVideoInput");
+      const chaptersRow = document.getElementById("chaptersRow");
+
+      function fmtTime(sec) {
+        if (!isFinite(sec) || sec < 0) return "00:00";
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      }
+
+      video.addEventListener("loadedmetadata", () => {
+        videoFallback.classList.remove("visible");
+        const dur = video.duration || (activeProject ? activeProject.video.durationFallback : 36);
+        scrubber.max = dur;
+        timeReadout.textContent = `${fmtTime(video.currentTime)} / ${fmtTime(dur)}`;
+      });
+
+      video.addEventListener("timeupdate", () => {
+        const dur = video.duration || (activeProject ? activeProject.video.durationFallback : 36);
+        scrubber.value = video.currentTime;
+        timeReadout.textContent = `${fmtTime(video.currentTime)} / ${fmtTime(dur)}`;
+      });
+
+      video.addEventListener("play", () => {
+        playPauseBtn.textContent = "Pause";
+      });
+
+      video.addEventListener("pause", () => {
+        playPauseBtn.textContent = "Play";
+      });
+
+      playPauseBtn.addEventListener("click", () => {
+        if (video.paused) {
+          video.play().catch(() => {
+            videoFallback.classList.add("visible");
+          });
+        } else {
+          video.pause();
+        }
+      });
+
+      muteBtn.addEventListener("click", () => {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? "Som: Off" : "Som: On";
+      });
+
+      scrubber.addEventListener("input", () => {
+        video.currentTime = parseFloat(scrubber.value);
+      });
+
+      fullscreenBtn.addEventListener("click", () => {
+        if (video.requestFullscreen) {
+          video.requestFullscreen().catch(() => {});
+        } else if (video.webkitEnterFullscreen) {
+          video.webkitEnterFullscreen();
+        }
+      });
+
+      localVideoInput.addEventListener("change", (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const url = URL.createObjectURL(file);
+        video.src = url;
+        videoFallback.classList.remove("visible");
+        video.play().catch(() => {});
+      });
+
+      /* ========================================================================
+         6. ABERTURA E FECHAMENTO DA SUB-ABA DO PROJETO (VISÃO 01 <-> VISÃO 02)
+         ======================================================================== */
+      function populateProjectSubTab(project) {
+        activeProject = project;
+
+        // Atualiza barra superior, cabeçalho editorial e ficha técnica
+        document.getElementById("subtabBreadcrumb").innerHTML = `PROCESSO / <strong>${project.index} · ${project.name}</strong>`;
+        document.getElementById("activeContextEyebrow").textContent = `PROJETO ${project.index} · BREAKDOWN TÉCNICO`;
+        document.getElementById("activeProjectHeading").textContent = project.headline || `${project.name} — Do Croqui ao Render Comercial`;
+        document.getElementById("activeProjectDesc").textContent = project.description;
+        document.getElementById("metaClient").textContent = project.meta.client;
+        document.getElementById("metaPipeline").textContent = project.meta.pipeline;
+        document.getElementById("metaDeliverables").textContent = project.meta.deliverables;
+        document.getElementById("footerProjectLabel").textContent = `PROJETO: ${project.name} · BREAKDOWN DE PROCESSO`;
+
+        // Reseta pins técnicos fechados
+        frontPinsLayer.classList.remove("visible");
+        togglePinsBtn.classList.remove("active");
+
+        // Atualiza Etapa 01 (Frontal + Pins + Cards de Etapa)
+        applyFrontPreset("sketch-final", 50);
+
+        frontPinsLayer.innerHTML = "";
+        project.pins.forEach((pin) => {
+          const pinEl = document.createElement("div");
+          pinEl.className = `tech-pin${pin.alignRight ? " pin-right" : ""}`;
+          pinEl.style.left = pin.left;
+          pinEl.style.top = pin.top;
+          pinEl.innerHTML = `
+            <button type="button" class="pin-dot" aria-label="${pin.title}">${pin.num}</button>
+            <div class="pin-card">
+              <strong>${pin.title}</strong>
+              ${pin.text}
+            </div>
+          `;
+          const dot = pinEl.querySelector(".pin-dot");
+          dot.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const wasOpen = pinEl.classList.contains("open");
+            document.querySelectorAll(".tech-pin").forEach((p) => p.classList.remove("open"));
+            if (!wasOpen) pinEl.classList.add("open");
+          });
+          frontPinsLayer.appendChild(pinEl);
+        });
+
+        frontStageCardsContainer.innerHTML = "";
+        project.stages.forEach((st, idx) => {
+          const card = document.createElement("div");
+          card.className = `step-card${idx === 0 ? " active" : ""}`;
+          card.innerHTML = `
+            <div class="step-top">
+              <span class="step-num">${st.num}</span>
+              <span class="step-tag">${st.tag}</span>
+            </div>
+            <div class="step-title">${st.title}</div>
+            <p class="step-text">${st.text}</p>
+          `;
+          card.addEventListener("click", () => {
+            frontStageCardsContainer.querySelectorAll(".step-card").forEach((c) => c.classList.remove("active"));
+            card.classList.add("active");
+            if (idx === 0) {
+              applyFrontPreset("sketch-final", 88);
+            } else if (idx === 1) {
+              applyFrontPreset("clay-final", 88);
+            } else {
+              applyFrontPreset("sketch-final", 12);
+            }
+          });
+          frontStageCardsContainer.appendChild(card);
+        });
+
+        // Atualiza Etapa 02 (Tampa Traseira & Macro)
+        document.getElementById("backDetailLabel").textContent = project.assets.backLabel;
+        applyBackPreset("sketch-final", 50);
+
+        const backSpecsStrip = document.getElementById("backSpecsStrip");
+        backSpecsStrip.innerHTML = project.backSpecs
+          .map((s) => `<div class="spec-item"><span>${s.label}</span>${s.value}</div>`)
+          .join("");
+
+        document.getElementById("macroDetailLabel").textContent = project.assets.macroLabel;
+        setImgAsset(macroBaseImg, project.assets.macroImg);
+
+        const macroSpecsStrip = document.getElementById("macroSpecsStrip");
+        macroSpecsStrip.innerHTML = project.macroSpecs
+          .map((s) => `<div class="spec-item"><span>${s.label}</span>${s.value}</div>`)
+          .join("");
+
+        // Atualiza Etapa 03 (Vídeo Comercial & Capítulos)
+        document.getElementById("videoSectionTitle").textContent = project.video.title;
+        const posterCandidates = getAssetCandidates(project.video.poster);
+        if (posterCandidates.length > 0) {
+          video.poster = posterCandidates[0];
+        }
+
+        video.pause();
+        playPauseBtn.textContent = "Play";
+        videoFallback.classList.remove("visible");
+        video.innerHTML = project.video.sources
+          .map((src) => `<source src="${src}" type="video/mp4" />`)
+          .join("");
+
+        const lastSrc = video.querySelector("source:last-of-type");
+        if (lastSrc) {
+          lastSrc.addEventListener("error", () => {
+            videoFallback.classList.add("visible");
+          });
+        }
+        video.load();
+
+        scrubber.value = 0;
+        scrubber.max = project.video.durationFallback || 36;
+        timeReadout.textContent = `00:00 / ${fmtTime(project.video.durationFallback || 36)}`;
+
+        chaptersRow.innerHTML = `<span style="font-family:var(--font-mono);font-size:10px;color:#7a7a7a;text-transform:uppercase;margin-right:4px;">Capítulos:</span>`;
+        project.video.chapters.forEach((ch, idx) => {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = `chapter-chip${idx === 0 ? " active" : ""}`;
+          chip.dataset.seek = String(ch.seek);
+          chip.textContent = ch.label;
+          chip.addEventListener("click", () => {
+            chaptersRow.querySelectorAll(".chapter-chip").forEach((c) => c.classList.remove("active"));
+            chip.classList.add("active");
+            video.currentTime = ch.seek;
+            video.play().catch(() => {});
+          });
+          chaptersRow.appendChild(chip);
+        });
+      }
+
+      function syncRouteHash(hashId) {
+        try {
+          const isSandboxedOrigin =
+            window.location.protocol === "blob:" ||
+            window.location.protocol === "about:" ||
+            window.location.origin === "null";
+
+          if (hashId) {
+            const targetHash = `#${hashId}`;
+            if (window.location.hash === targetHash) return;
+            if (isSandboxedOrigin) {
+              window.location.hash = targetHash;
+            } else {
+              history.pushState({ projectId: hashId }, "", targetHash);
+            }
+          } else if (window.location.hash) {
+            if (isSandboxedOrigin) {
+              history.replaceState(null, "", "#");
+            } else {
+              history.pushState(null, "", window.location.pathname + window.location.search);
+            }
+          }
+        } catch (_) {
+          // Fallback silencioso para ambientes de preview com restrições na History API
+          try {
+            window.location.hash = hashId ? `#${hashId}` : "";
+          } catch (__) {}
+        }
+      }
+
+      function openProjectSubTab(projectId, updateHash) {
+        const found = PROJECTS.find((p) => p.id === projectId);
+        if (!found) return;
+
+        populateProjectSubTab(found);
+
+        galleryView.classList.add("view-hidden");
+        projectSubTab.classList.remove("view-hidden");
+        document.title = `LUCAS PAZ 3D|CGI — Processo | ${found.name}`;
+
+        if (updateHash) {
+          syncRouteHash(found.id);
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function closeProjectSubTab(updateHash) {
+        video.pause();
+        playPauseBtn.textContent = "Play";
+        document.querySelectorAll(".tech-pin").forEach((p) => p.classList.remove("open"));
+
+        projectSubTab.classList.add("view-hidden");
+        galleryView.classList.remove("view-hidden");
+        activeProject = null;
+
+        document.title = "LUCAS PAZ 3D|CGI — Processo & Breakdown";
+        document.getElementById("footerProjectLabel").textContent = "ABA PROCESSO · SELECIONE UM PROJETO PARA INSPECIONAR";
+
+        if (updateHash) {
+          syncRouteHash("");
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Controles de retorno à galeria de projetos (botão Voltar, nav Processo, marca e tecla ESC)
+      document.getElementById("backToGalleryBtn").addEventListener("click", () => {
+        closeProjectSubTab(true);
+      });
+
+      document.getElementById("navProcessoLink").addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!projectSubTab.classList.contains("view-hidden")) {
+          closeProjectSubTab(true);
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+
+      document.getElementById("brandHomeLink").addEventListener("click", (e) => {
+        if (!projectSubTab.classList.contains("view-hidden")) {
+          e.preventDefault();
+          closeProjectSubTab(true);
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !projectSubTab.classList.contains("view-hidden")) {
+          closeProjectSubTab(true);
+        }
+      });
+
+      function handleRouteChange() {
+        const hashId = window.location.hash.replace(/^#/, "");
+        const matched = PROJECTS.find((p) => p.id === hashId);
+        if (matched) {
+          if (!activeProject || activeProject.id !== matched.id) {
+            openProjectSubTab(matched.id, false);
+          }
+        } else if (!projectSubTab.classList.contains("view-hidden")) {
+          closeProjectSubTab(false);
+        }
+      }
+
+      window.addEventListener("popstate", handleRouteChange);
+      window.addEventListener("hashchange", handleRouteChange);
+
+      // Inicialização: renderiza a galeria e verifica se há hash direto (#agnus-watch)
+      renderProjectCards();
+      const initialHash = window.location.hash.replace(/^#/, "");
+      const initialProject = PROJECTS.find((p) => p.id === initialHash);
+      if (initialProject) {
+        openProjectSubTab(initialProject.id, false);
+      }
+    })();
+  </script>
+</body>
+</html>
